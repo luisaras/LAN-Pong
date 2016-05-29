@@ -111,7 +111,7 @@ background-color: blue</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">text-size: 16;</string>
+     <string notr="true"/>
     </property>
     <property name="lineWidth">
      <number>2</number>

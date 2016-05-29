@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
+#include <QKeyEvent>
 #include <cmath>
 
 struct Player {
@@ -39,13 +40,20 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void keyPressEvent(QKeyEvent*);
     ~MainWindow();
 
 public slots:
-    void connect();
+    void connectToServer();
 
 private:
     QTcpSocket socket;
+    void run();
+    void sendMessage(int);
+    void receiveMessages();
+    void showConnectScreen();
+    void showWaitingScreen();
+    void updateGameScreen(GameState);
     Ui::MainWindow *ui;
 };
 

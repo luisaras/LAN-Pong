@@ -13,10 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    connect(ui->connectButton, SIGNAL(released()), this, SLOT(connect()) );
+    connect(ui->connectButton, SIGNAL(released()), this, SLOT(connectToServer()) );
+    showConnectScreen();
 
-    // TODO: connect nas teclas
-    run();
+    //run();
 }
 
 void MainWindow::run() {
@@ -25,13 +25,21 @@ void MainWindow::run() {
     }
 }
 
-void MainWindow::connect() {
+void MainWindow::connectToServer() {
     // TODO: conectar ao socket
 }
 
-void MainWindow::sendMessage() {
+void MainWindow::keyPressEvent(QKeyEvent* e) {
+    if (e->key() == Qt::Key_Up) { // baixo
+        sendMessage(1);
+    } else if (e->key() == Qt::Key_Down) { // cima
+        sendMessage(-1);
+    }
+}
+
+void MainWindow::sendMessage(int input) {
     PlayerAction action;
-    action.input = 1; // TODO: LER DO TECLADO
+    action.input = input;
 
     // TODO: mandar mensagem por socket por servidor
 }
@@ -43,22 +51,36 @@ void MainWindow::receiveMessages() {
 
     if (msg.serverState == 0) { // se tá esperando outro cliente
         showWaitingScreen();
-    } else {
+    } else if (msg.serverState == 1){ // se tá no meio do jogo
         updateGameScreen(msg.gameState);
+    } else { // tá cheio
+        showConnectScreen();
+        ui->fullWarning->show();
     }
 }
 
 void MainWindow::showWaitingScreen() {
     ui->connectButton->hide();
-    ui->fullWarning->show();
-    ui->fullWarning->setText("Waiting for other player...");
-
+    ui->fullWarning->hide();
     ui->player1->hide();
     ui->player2->hide();
     ui->ball->hide();
+
+    ui->startText->show();
+    ui->startText->setText("Waiting for other player...");
 }
 
-void MainWindow::updateGameSreen(GameState state) {
+void MainWindow::showConnectScreen() {
+    ui->player1->hide();
+    ui->player2->hide();
+    ui->ball->hide();
+    ui->fullWarning->hide();
+    ui->startText->hide();
+
+    ui->connectButton->show();
+}
+
+void MainWindow::updateGameScreen(GameState state) {
     ui->connectButton->hide();
     ui->fullWarning->hide();
 

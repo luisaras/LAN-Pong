@@ -1,7 +1,4 @@
-#include "Game.h"
-#include <ctime>
-#include <cmath>
-#include <random>
+#include "game.h"
 
 #define windowWidth 600
 #define windowHeight 400
@@ -14,7 +11,8 @@
 using namespace std;
 
 Game::Game() {
-    srand(time(NULL));
+
+    srand((int) time(NULL));
     resetRound();
     players[0].points = players[1].points = 0;
     startCount = 120;
@@ -60,14 +58,14 @@ void Game::resetRound() {
 
     // Velocidade inicial da bola
     if (rand() % 2) {
-        ball.dx = ballSpeed / sqrt(2);
+        ball.dx = ballSpeed / (float)sqrt(2);
     } else {
-        ball.dx = -ballSpeed / sqrt(2);
+        ball.dx = -ballSpeed / (float)sqrt(2);
     }
     if (rand() % 2) {
-        ball.dy = ballSpeed / sqrt(2);
+        ball.dy = ballSpeed / (float)sqrt(2);
     } else {
-        ball.dy = -ballSpeed / sqrt(2);
+        ball.dy = -ballSpeed / (float)sqrt(2);
     }
 }
 
@@ -82,10 +80,10 @@ GameState Game::getState() {
 }
 
 void Game::onPlayerAction(PlayerAction action) {
-    int id = action.playerID;
+    int i = action.playerID - 1;
     if (action.input > 0) {
-        players[id].y = min(players[id].y + barSpeed, windowHeight - 1);
+        players[i].y = min(players[i].y + barSpeed, windowHeight - 1);
     } else {
-        players[id].y = max(players[id].y - barSpeed, 0);
+        players[i].y = max(players[i].y - barSpeed, 0);
     }
 }

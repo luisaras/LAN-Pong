@@ -14,8 +14,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -26,6 +28,12 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
+    QPushButton *connectButton;
+    QLabel *fullWarning;
+    QLabel *player1;
+    QLabel *player2;
+    QLabel *startText;
+    QLabel *ball;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -39,6 +47,43 @@ public:
         MainWindow->setMaximumSize(QSize(600, 400));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        connectButton = new QPushButton(centralWidget);
+        connectButton->setObjectName(QStringLiteral("connectButton"));
+        connectButton->setGeometry(QRect(220, 120, 141, 61));
+        QFont font;
+        font.setPointSize(16);
+        connectButton->setFont(font);
+        fullWarning = new QLabel(centralWidget);
+        fullWarning->setObjectName(QStringLiteral("fullWarning"));
+        fullWarning->setGeometry(QRect(200, 190, 181, 21));
+        QFont font1;
+        font1.setPointSize(10);
+        fullWarning->setFont(font1);
+        player1 = new QLabel(centralWidget);
+        player1->setObjectName(QStringLiteral("player1"));
+        player1->setGeometry(QRect(0, 130, 20, 80));
+        player1->setStyleSheet(QLatin1String("border: 1px solid black;\n"
+"background-color: red"));
+        player2 = new QLabel(centralWidget);
+        player2->setObjectName(QStringLiteral("player2"));
+        player2->setGeometry(QRect(580, 130, 20, 80));
+        player2->setStyleSheet(QLatin1String("border: 1px solid black;\n"
+"background-color: blue"));
+        startText = new QLabel(centralWidget);
+        startText->setObjectName(QStringLiteral("startText"));
+        startText->setGeometry(QRect(230, 60, 121, 31));
+        QFont font2;
+        font2.setPointSize(12);
+        startText->setFont(font2);
+        startText->setStyleSheet(QStringLiteral(""));
+        startText->setLineWidth(2);
+        startText->setAlignment(Qt::AlignCenter);
+        ball = new QLabel(centralWidget);
+        ball->setObjectName(QStringLiteral("ball"));
+        ball->setGeometry(QRect(280, 220, 20, 20));
+        ball->setStyleSheet(QLatin1String("border: 1px solid black;\n"
+"background-color: white"));
+        ball->setFrameShape(QFrame::Box);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -59,6 +104,12 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        connectButton->setText(QApplication::translate("MainWindow", "Connect!", 0));
+        fullWarning->setText(QApplication::translate("MainWindow", "There're already two players.", 0));
+        player1->setText(QString());
+        player2->setText(QString());
+        startText->setText(QApplication::translate("MainWindow", "Starting in...", 0));
+        ball->setText(QString());
     } // retranslateUi
 
 };
