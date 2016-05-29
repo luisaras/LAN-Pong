@@ -6,6 +6,8 @@ using namespace std;
 Server::Server() {
     QHostAddress host("192.168.7.1");
 
+    client1 = client2 = NULL;
+
     if (!serverSocket.listen(host, portnum)) {
         std::cout << "Listen error" << std::endl;
         return;
@@ -17,24 +19,33 @@ Server::Server() {
 
 void Server::run() {
     while(1) {
-        waitForPlayer1();
-        waitForPlayer2();
+        while(1) {
+            if (!isConnected(client1)) {
+                cout << "Waiting for player 1..." << endl;
+            } else if (!isConnected(client2)) {
+                cout << "Waiting for player 2..." << endl;
+            } else {
+                break;
+            }
+            QThread::currentThread()->sleep(1);
+        }
         startGame();
     }
 }
 
 void Server::startGame() {
     game = Game();
+    cout << "Starting game..." << endl;
     while(1) {
         if (!checkConnections()) {
             break;
         }
         game.update();
-        QThread::currentThread()->sleep(1000 / framerate);
+        QThread::currentThread()->sleep(1 / framerate);
         sendGameState();
     }
+    cout << "Game over." << endl;
 }
-
 
 bool Server::checkConnections() {
     if (isConnected(client1)) {
@@ -69,27 +80,15 @@ void Server::sendFullMessage(QTcpSocket* client) {
 }
 
 void Server::acceptConnection() {
-    if (client1 == NULL) {
+    if (!isConnected(client1)) {
         client1 = serverSocket.nextPendingConnection();
         connect(client1, SIGNAL(readyRead()), this, SLOT(receiveAction1()));
-    } else if (client2 == NULL) {
+    } else if (!isConnected(client2)) {
         client2 = serverSocket.nextPendingConnection();
         connect(client2, SIGNAL(readyRead()), this, SLOT(receiveAction2()));
     } else {
         QTcpSocket* client = serverSocket.nextPendingConnection();
         sendFullMessage(client);
-    }
-}
-
-void Server::waitForPlayer1() {
-    while(isConnected(client1)) {
-        QThread::currentThread()->sleep(1);
-    }
-}
-
-void Server::waitForPlayer2() {
-    while(!isConnected(client2)) {
-        QThread::currentThread()->sleep(1);
     }
 }
 
@@ -121,6 +120,7 @@ void Server::receiveAction2() {
 bool Server::isConnected(QTcpSocket* client) {
     if (client == NULL)
         return false;
+    cout << "ble" << endl;
     return client->state() == QAbstractSocket::ConnectedState;
 }
 

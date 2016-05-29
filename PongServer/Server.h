@@ -16,6 +16,8 @@ struct ServerMessage {
 };
 
 class Server : QObject {
+    Q_OBJECT
+
     public:
         Server();
         ~Server();

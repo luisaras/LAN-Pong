@@ -44,7 +44,7 @@
      <string>Connect!</string>
     </property>
    </widget>
-   <widget class="QLabel" name="fullWarning">
+   <widget class="QLabel" name="warning">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -60,6 +60,9 @@
     </property>
     <property name="text">
      <string>There're already two players.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="player1">

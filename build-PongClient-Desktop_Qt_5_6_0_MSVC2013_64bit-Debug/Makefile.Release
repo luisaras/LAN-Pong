@@ -270,6 +270,8 @@ release\moc_mainwindow.cpp: "..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\i
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QTcpSocket" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qtcpsocket.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qabstractsocket.h" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QHostAddress" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qhostaddress.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtGui\QKeyEvent" \
 		..\PongClient\mainwindow.h
 	"E:\Arquivos de Programas\Qt\5.6\msvc2013_64\bin\moc.exe" $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/mkspecs/win32-msvc2013" -IE:/BitBucket/Pong/PongClient -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include" -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include/QtWidgets" -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include/QtGui" -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include/QtANGLE" -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include/QtNetwork" -I"E:/Arquivos de Programas/Qt/5.6/msvc2013_64/include/QtCore" -I. ..\PongClient\mainwindow.h -o release\moc_mainwindow.cpp
@@ -405,6 +407,8 @@ release\main.obj: ..\PongClient\main.cpp ../PongClient/mainwindow.h \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QTcpSocket" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qtcpsocket.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qabstractsocket.h" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QHostAddress" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qhostaddress.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtGui\QKeyEvent" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtWidgets\QApplication" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtWidgets\qapplication.h" \
@@ -525,6 +529,8 @@ release\mainwindow.obj: ..\PongClient\mainwindow.cpp ../PongClient/mainwindow.h 
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QTcpSocket" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qtcpsocket.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qabstractsocket.h" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\QHostAddress" \
+		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtNetwork\qhostaddress.h" \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtGui\QKeyEvent" \
 		ui_mainwindow.h \
 		"..\..\..\Arquivos de Programas\Qt\5.6\msvc2013_64\include\QtCore\QVariant" \

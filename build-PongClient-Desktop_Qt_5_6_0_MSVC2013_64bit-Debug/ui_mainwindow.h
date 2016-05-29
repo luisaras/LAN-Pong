@@ -29,7 +29,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QPushButton *connectButton;
-    QLabel *fullWarning;
+    QLabel *warning;
     QLabel *player1;
     QLabel *player2;
     QLabel *startText;
@@ -53,12 +53,13 @@ public:
         QFont font;
         font.setPointSize(16);
         connectButton->setFont(font);
-        fullWarning = new QLabel(centralWidget);
-        fullWarning->setObjectName(QStringLiteral("fullWarning"));
-        fullWarning->setGeometry(QRect(200, 190, 181, 21));
+        warning = new QLabel(centralWidget);
+        warning->setObjectName(QStringLiteral("warning"));
+        warning->setGeometry(QRect(200, 190, 181, 21));
         QFont font1;
         font1.setPointSize(10);
-        fullWarning->setFont(font1);
+        warning->setFont(font1);
+        warning->setAlignment(Qt::AlignCenter);
         player1 = new QLabel(centralWidget);
         player1->setObjectName(QStringLiteral("player1"));
         player1->setGeometry(QRect(0, 130, 20, 80));
@@ -105,7 +106,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         connectButton->setText(QApplication::translate("MainWindow", "Connect!", 0));
-        fullWarning->setText(QApplication::translate("MainWindow", "There're already two players.", 0));
+        warning->setText(QApplication::translate("MainWindow", "There're already two players.", 0));
         player1->setText(QString());
         player2->setText(QString());
         startText->setText(QApplication::translate("MainWindow", "Starting in...", 0));

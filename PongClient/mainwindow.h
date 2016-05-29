@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
+#include <QHostAddress>
 #include <QKeyEvent>
 #include <cmath>
 
@@ -47,7 +48,7 @@ public slots:
     void connectToServer();
 
 private:
-    QTcpSocket socket;
+    QTcpSocket* server;
     void run();
     void sendMessage(int);
     void receiveMessages();

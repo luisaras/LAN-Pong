@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->connectButton, SIGNAL(released()), this, SLOT(connectToServer()) );
     showConnectScreen();
+    server = new QTcpSocket(this);
 
     //run();
 }
@@ -26,7 +27,13 @@ void MainWindow::run() {
 }
 
 void MainWindow::connectToServer() {
-    // TODO: conectar ao socket
+    QHostAddress host("192.168.7.1");
+    server->abort();
+    server->connectToHost(host, portnum);
+    if (server->state() != QAbstractSocket::ConnectedState) {
+        ui->warning->show();
+        ui->warning->setText("Unable to connect.");
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* e) {
@@ -55,13 +62,14 @@ void MainWindow::receiveMessages() {
         updateGameScreen(msg.gameState);
     } else { // tá cheio
         showConnectScreen();
-        ui->fullWarning->show();
+        ui->warning->show();
+        ui->warning->setText("There're already two players.");
     }
 }
 
 void MainWindow::showWaitingScreen() {
     ui->connectButton->hide();
-    ui->fullWarning->hide();
+    ui->warning->hide();
     ui->player1->hide();
     ui->player2->hide();
     ui->ball->hide();
@@ -74,7 +82,7 @@ void MainWindow::showConnectScreen() {
     ui->player1->hide();
     ui->player2->hide();
     ui->ball->hide();
-    ui->fullWarning->hide();
+    ui->warning->hide();
     ui->startText->hide();
 
     ui->connectButton->show();
@@ -82,7 +90,7 @@ void MainWindow::showConnectScreen() {
 
 void MainWindow::updateGameScreen(GameState state) {
     ui->connectButton->hide();
-    ui->fullWarning->hide();
+    ui->warning->hide();
 
     ui->player1->show();
     ui->player2->show();
