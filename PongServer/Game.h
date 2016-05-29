@@ -1,3 +1,6 @@
+#ifndef GAME
+#define GAME
+
 struct Ball {
     float dx;
     float dy;
@@ -16,34 +19,28 @@ struct PlayerAction {
     int input;
 };
 
-struct RoundState {
-    bool isRunning;
+struct GameState {
+    int startCount;
     float ballX;
     float ballY;
     Player p1;
     Player p2;
 };
 
-enum GameState {
-    waitingPlayer1, waitingPlayer2, running
-};
-
 class Game {
     public:
         Game();
         ~Game();
-        void run();
+        void update();
+        void onPlayerAction(PlayerAction);
+        GameState getState();
 
     private:
-        GameState currentState;
+        int startCount;
         Player players[2];
         Ball ball;
-
-        // Bagulho do jogo
-        void updateBallMovement();
+        void moveBall();
         void resetRound();
-
-        // Bagulho dos socket
-        void onPlayerAction(PlayerAction);
-        void sendState();
 };
+
+#endif

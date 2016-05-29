@@ -1,9 +1,7 @@
 #include "Game.h"
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <random>
+#include <ctime>
 #include <cmath>
+#include <random>
 
 #define windowWidth 600
 #define windowHeight 400
@@ -19,28 +17,21 @@ Game::Game() {
     srand(time(NULL));
     resetRound();
     players[0].points = players[1].points = 0;
+    startCount = 120;
 }
 
-void Game::run() {
+Game::~Game() { }
 
-    // TODO: criar threads para receber as mensagens do socket
-
-    while(1) {
-        switch (currentState) {
-        case waitingPlayer1:
-            // checar se alguém se conectou: se sim, passa pro waitingPlayer2
-        case waitingPlayer2:
-            // checar se alguém se conectou: se sim, passa pro running
-        case running:
-            updateBallMovement();
-        }
-        sendState();
-        this_thread::sleep_for(24);
+void Game::update() {
+    if (startCount > 0) {
+        startCount--;
+    } else {
+        moveBall();
     }
 }
 
-void Game::updateBallMovement() {
-    // TODO: fazer os cálculo louco de colisão da bola com a parede
+void Game::moveBall() {
+
     ball.x += ball.dx;
     ball.y += ball.dy;
 
@@ -50,10 +41,8 @@ void Game::updateBallMovement() {
     } else if (ball.x >= windowWidth - ballSize) {
         resetRound();
         players[0].points++;
-    }
-
-    if (ball.y <= 0) {
-        // bla
+    } else if (ball.y <= 0) {
+        // TODO: fazer os cálculo louco de colisão da bola com a parede
     } else if (ball.y >= windowHeight - ballSize) {
         // bla
     }
@@ -82,22 +71,21 @@ void Game::resetRound() {
     }
 }
 
-void Game::sendState() {
-    RoundState state;
+GameState Game::getState() {
+    GameState state;
     state.ballX = ball.x;
     state.ballY = ball.y;
     state.p1 = players[0];
     state.p2 = players[1];
-    state.isRunning = (currentState == running);
-
-    // TODO: enviar para ambos os clientes o estado atual
+    state.startCount = startCount;
+    return state;
 }
 
-// O que fazer com a informação que o cliente mandou
 void Game::onPlayerAction(PlayerAction action) {
+    int id = action.playerID;
     if (action.input > 0) {
-        players[action.playerID].y = min(players[action.playerID].y + barSpeed, windowHeight - 1);
+        players[id].y = min(players[id].y + barSpeed, windowHeight - 1);
     } else {
-        players[action.playerID].y = max(players[action.playerID].y - barSpeed, 0);
+        players[id].y = max(players[id].y - barSpeed, 0);
     }
 }
