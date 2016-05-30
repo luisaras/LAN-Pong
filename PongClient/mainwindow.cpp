@@ -27,7 +27,7 @@ void MainWindow::run() {
 }
 
 void MainWindow::connectToServer() {
-    QHostAddress host("192.168.7.1");
+    QHostAddress host("192.168.7.2");
     server->abort();
     server->connectToHost(host, portnum);
     if (server->state() != QAbstractSocket::ConnectedState) {

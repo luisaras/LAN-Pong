@@ -8,7 +8,7 @@ Server::Server() {
 
     client1 = client2 = NULL;
 
-    if (!serverSocket.listen(host, portnum)) {
+    if (!serverSocket.listen(QHostAddress::Any, portnum)) {
         std::cout << "Listen error" << std::endl;
         return;
     }
