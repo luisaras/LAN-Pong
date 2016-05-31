@@ -5,6 +5,9 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include <QKeyEvent>
+#include <QThread>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 #include <cmath>
 #include <iostream>
 
@@ -50,11 +53,13 @@ public slots:
     void receiveMessage();
 
 private:
+    QFuture<void> connectionThread;
     QTcpSocket* server;
     void sendMessage(int);
     void showConnectScreen();
     void showWaitingScreen();
     void updateGameScreen(GameState);
+    void tryConnection();
     Ui::MainWindow *ui;
 };
 

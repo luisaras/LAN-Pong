@@ -28,12 +28,22 @@ void MainWindow::connectToServer() {
     QHostAddress host("192.168.7.2");
     server->abort();
     server->connectToHost(host, portnum);
-    if ((server->state() != QAbstractSocket::ConnectedState)
-            && (server->state() != QAbstractSocket::ConnectingState)) {
+    ui->warning->show();
+    ui->warning->setText("Trying to connect...");
+    connectionThread = QtConcurrent::run(this, &MainWindow::tryConnection);
+}
+
+void MainWindow::tryConnection() {
+    int count = 0;
+    while(server->state() != QAbstractSocket::ConnectedState && count < 5) {
+        count++;
+        QThread::currentThread()->sleep(1);
+    }
+    if (server->state() != QAbstractSocket::ConnectedState) {
         ui->warning->show();
         ui->warning->setText("Unable to connect.");
     } else {
-        ui->warning->setText("");
+        ui->warning->setText("Connected.");
     }
 }
 
