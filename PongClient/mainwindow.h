@@ -6,6 +6,7 @@
 #include <QHostAddress>
 #include <QKeyEvent>
 #include <cmath>
+#include <iostream>
 
 struct Player {
     int points;
@@ -46,12 +47,11 @@ public:
 
 public slots:
     void connectToServer();
+    void receiveMessage();
 
 private:
     QTcpSocket* server;
-    void run();
     void sendMessage(int);
-    void receiveMessages();
     void showConnectScreen();
     void showWaitingScreen();
     void updateGameScreen(GameState);

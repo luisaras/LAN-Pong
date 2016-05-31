@@ -4,10 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-QT      += network
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core
+QT -= gui
+LIBS += -pthread
+CONFIG += c++11
 
 TARGET = PongServer
 TEMPLATE = app
@@ -15,10 +15,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     game.cpp \
-    server.cpp
+    server.cpp \
 
 HEADERS  += \
     server.h \
-    game.h
-
-FORMS    += mainwindow.ui
+    game.h \

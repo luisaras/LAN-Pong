@@ -1,6 +1,6 @@
 #include "server.h"
 
-int main(int, char) {
+int main(int, char**) {
     Server server;
     server.run();
 

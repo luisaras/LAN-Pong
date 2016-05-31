@@ -4,7 +4,6 @@
 #include <ctime>
 #include <cmath>
 #include <random>
-#include <qrect.h>
 
 struct Ball {
     float dx;

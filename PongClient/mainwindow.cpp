@@ -6,7 +6,9 @@
 #define ballSize 20
 #define framerate 30
 
-#define portnum 80
+#define portnum 12345
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,25 +16,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->connectButton, SIGNAL(released()), this, SLOT(connectToServer()) );
+
     showConnectScreen();
     server = new QTcpSocket(this);
 
-    //run();
+    connect(server, SIGNAL(readyRead()), this, SLOT(receiveMessage()));
 }
 
-void MainWindow::run() {
-    while(1) {
-        receiveMessages();
-    }
-}
 
 void MainWindow::connectToServer() {
     QHostAddress host("192.168.7.2");
     server->abort();
     server->connectToHost(host, portnum);
-    if (server->state() != QAbstractSocket::ConnectedState) {
+    if ((server->state() != QAbstractSocket::ConnectedState)
+            && (server->state() != QAbstractSocket::ConnectingState)) {
         ui->warning->show();
         ui->warning->setText("Unable to connect.");
+    } else {
+        ui->warning->setText("");
     }
 }
 
@@ -48,13 +49,14 @@ void MainWindow::sendMessage(int input) {
     PlayerAction action;
     action.input = input;
 
-    // TODO: mandar mensagem por socket por servidor
+    server->write((char*)(&action), (qint64) sizeof(action));
 }
 
-void MainWindow::receiveMessages() {
+void MainWindow::receiveMessage() {
     ServerMessage msg;
+    server->read((char *) &msg, (qint64) sizeof(msg));
 
-    // TODO: receber por socket
+    cout << "Recebi uma mensagem do server" << endl;
 
     if (msg.serverState == 0) { // se tá esperando outro cliente
         showWaitingScreen();
