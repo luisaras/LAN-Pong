@@ -6,7 +6,7 @@
 #define barHeight 80
 #define barSpeed 4
 #define ballSize 20
-#define ballSpeed 1
+#define ballSpeed 4
 
 using namespace std;
 
@@ -73,16 +73,23 @@ void Game::moveBall() {
 
     ball.x += ball.dx;
     ball.y += ball.dy;
+    if (ball.y >= players[0].y && ball.y < players[0].y + barHeight
+        && ball.x <= players[0].x + barWidth) {
+        ball.dx *= -1;
+    } else if (ball.y >= players[1].y && ball.y < players[1].y + barHeight
+        && ball.x <= players[1].x) {
+        ball.dx *= -1;
+    }
 
-    if (ball.x <= 1) {
+    if (ball.x <= 0) {
         resetRound();
         players[1].points++;
-    } else if (ball.x >= windowWidth - ballSize - 1) {
+    } else if (ball.x >= windowWidth - ballSize) {
         resetRound();
         players[0].points++;
-    } else if (ball.y <= 1) {
+    } else if (ball.y <= 0) {
         ball.dy *= -1;
-    } else if (ball.y >= windowHeight - ballSize - 1) {
+    } else if (ball.y >= windowHeight - ballSize) {
         ball.dy *= -1;
     }
 }
