@@ -30,7 +30,6 @@ class Server {
     private:
         int socketID;
         void waitForPlayers(int&, int&);
-        void receiveActions(int, int *, Game *);
         void startGame(int, int);
         void sendGameState(int&, int&, Game&);
         int sendWaitingMessage(int);

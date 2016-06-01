@@ -3,6 +3,23 @@
 #define portnum 12345
 using namespace std;
 
+void receiveActions(int playerID, int clientID, Game game) {
+    while (1) {
+        PlayerAction action;
+        int msgID = recv(clientID, (char*)(&action), sizeof(action), 0);
+        if (msgID <= 0) {
+            clientID = -1;
+            cout << "deu bosta" << endl;
+            break;
+        }
+        cout << "recebeu mensagem" << endl;
+        action.playerID = playerID;
+        cout << game.players[0].y << " " << game.players[1].y << endl;
+        game.onPlayerAction(action);
+        cout << game.players[0].y << " " << game.players[1].y << endl;
+    }
+}
+
 Server::Server() {
 
     socketID = socket(AF_INET, SOCK_STREAM, 0);
@@ -40,8 +57,8 @@ void Server::run() {
 
 void Server::startGame(int client1, int client2) {
     Game game;
-    thread receiver1(&Server::receiveActions, this, 1, &client1, &game);
-    thread receiver2(&Server::receiveActions, this, 2, &client2, &game);
+    thread receiver1(&receiveActions, 1, client1, game);
+    thread receiver2(&receiveActions, 2, client2, game);
     cout << "Starting game..." << endl;
     while(1) {
         game.update();
@@ -60,7 +77,7 @@ int Server::sendWaitingMessage(int clientID) {
 
     cout << "Mandando mensagem para o cliente..." << endl;
 
-    return recv(clientID, (char*)(&msg), sizeof(msg), 0);
+    return send(clientID, (char*)(&msg), sizeof(msg), 0);
 }
 
 void Server::sendGameState(int &client1, int &client2, Game &game) {
@@ -77,21 +94,6 @@ void Server::sendGameState(int &client1, int &client2, Game &game) {
        // deu bosta
         client2 = -1;
         return;
-    }
-}
-
-void Server::receiveActions(int playerID, int* clientID, Game* game){
-    while (1) {
-        PlayerAction action;
-        int msgID = recv(*clientID, (char*)(&action), sizeof(action), 0);
-        if (msgID <= 0) {
-            *clientID = -1;
-            cout << "deu bosta" << endl;
-            break;
-        }
-        cout << "recebeu mensagem" << endl;
-        action.playerID = playerID;
-        game->onPlayerAction(action);
     }
 }
 

@@ -48,9 +48,9 @@ void MainWindow::tryConnection() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_Up) { // baixo
+    if (e->text() == "s") { // baixo
         sendMessage(1);
-    } else if (e->key() == Qt::Key_Down) { // cima
+    } else if (e->text() == "w") { // cima
         sendMessage(-1);
     }
 }
@@ -58,7 +58,8 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
 void MainWindow::sendMessage(int input) {
     PlayerAction action;
     action.input = input;
-
+    ui->warning->show();
+    ui->warning->setText("Mensagem para server.");
     server->write((char*)(&action), (qint64) sizeof(action));
 }
 
@@ -66,7 +67,8 @@ void MainWindow::receiveMessage() {
     ServerMessage msg;
     server->read((char *) &msg, (qint64) sizeof(msg));
 
-    cout << "Recebi uma mensagem do server" << endl;
+    ui->warning->show();
+    ui->warning->setText("Mensagem do server.");
 
     if (msg.serverState == 0) { // se tá esperando outro cliente
         showWaitingScreen();

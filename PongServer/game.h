@@ -36,12 +36,12 @@ class Game {
         Game();
         ~Game();
         void update();
-        void onPlayerAction(PlayerAction);
+        void onPlayerAction(PlayerAction&);
         GameState getState();
-
+        Player players[2];
     private:
         int startCount;
-        Player players[2];
+
         Ball ball;
         void moveBall();
         void resetRound();

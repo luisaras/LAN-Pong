@@ -1,5 +1,5 @@
 #include "game.h"
-
+#include <iostream>
 #define windowWidth 600
 #define windowHeight 400
 #define barWidth 20
@@ -121,7 +121,7 @@ GameState Game::getState() {
     return state;
 }
 
-void Game::onPlayerAction(PlayerAction action) {
+void Game::onPlayerAction(PlayerAction &action) {
     int i = action.playerID - 1;
     if (action.input > 0) {
         players[i].y = min(players[i].y + barSpeed, windowHeight - 1);

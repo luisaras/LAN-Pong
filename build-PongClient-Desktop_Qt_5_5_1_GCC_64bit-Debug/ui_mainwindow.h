@@ -72,7 +72,7 @@ public:
 "background-color: blue"));
         startText = new QLabel(centralWidget);
         startText->setObjectName(QStringLiteral("startText"));
-        startText->setGeometry(QRect(230, 60, 121, 31));
+        startText->setGeometry(QRect(180, 60, 221, 31));
         QFont font2;
         font2.setPointSize(12);
         startText->setFont(font2);
@@ -88,7 +88,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 21));
+        menuBar->setGeometry(QRect(0, 0, 600, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
