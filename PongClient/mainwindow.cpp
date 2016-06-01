@@ -74,6 +74,9 @@ void MainWindow::receiveMessage() {
         showWaitingScreen();
     } else if (msg.serverState == 1){ // se tá no meio do jogo
         updateGameScreen(msg.gameState);
+    } else if (msg.serverState == 2) { // player desconectou
+        server->close();
+        showDisconnectScreen();
     } else { // tá cheio
         showConnectScreen();
         ui->warning->show();
@@ -100,6 +103,17 @@ void MainWindow::showConnectScreen() {
     ui->startText->hide();
 
     ui->connectButton->show();
+}
+
+void MainWindow::showDisconnectScreen() {
+    ui->player1->hide();
+    ui->player2->hide();
+    ui->ball->hide();
+
+    showConnectScreen();
+
+    ui->warning->show();
+    ui->warning->setText("Player disconnected.");
 }
 
 void MainWindow::updateGameScreen(GameState state) {

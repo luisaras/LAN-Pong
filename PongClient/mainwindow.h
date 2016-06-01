@@ -57,6 +57,7 @@ private:
     QTcpSocket* server;
     void sendMessage(int);
     void showConnectScreen();
+    void showDisconnectScreen();
     void showWaitingScreen();
     void updateGameScreen(GameState);
     void tryConnection();

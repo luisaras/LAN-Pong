@@ -6,7 +6,7 @@
 #define barHeight 80
 #define barSpeed 4
 #define ballSize 20
-#define ballSpeed 20
+#define ballSpeed 1
 
 using namespace std;
 
@@ -54,7 +54,6 @@ int main() {
 }*/
 
 Game::Game() {
-    srand((int) time(NULL));
     resetRound();
     players[0].points = players[1].points = 0;
     startCount = 3;
@@ -124,7 +123,7 @@ GameState Game::getState() {
 void Game::onPlayerAction(PlayerAction &action) {
     int i = action.playerID - 1;
     if (action.input > 0) {
-        players[i].y = min(players[i].y + barSpeed, windowHeight - 1);
+        players[i].y = min(players[i].y + barSpeed, windowHeight - barHeight);
     } else {
         players[i].y = max(players[i].y - barSpeed, 0);
     }

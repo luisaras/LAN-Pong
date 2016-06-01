@@ -31,8 +31,10 @@ class Server {
         int socketID;
         void waitForPlayers(int&, int&);
         void startGame(int, int);
-        void sendGameState(int&, int&, Game&);
+        void sendGameState(int &, int &, Game*);
         int sendWaitingMessage(int);
+        int sendDisconnectMessage(int);
+        bool checkConnections(int&, int&);
 };
 
 #endif

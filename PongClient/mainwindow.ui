@@ -7,19 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>400</height>
+    <height>460</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>600</width>
-    <height>400</height>
+    <height>460</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>600</width>
-    <height>400</height>
+    <height>460</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -137,7 +143,7 @@ background-color: blue</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 1px solid black;
-background-color: white</string>
+background-color: green</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
@@ -146,6 +152,30 @@ background-color: white</string>
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="background">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>600</width>
+      <height>400</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: white;
+border:1px solid black</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>background</zorder>
+   <zorder>connectButton</zorder>
+   <zorder>warning</zorder>
+   <zorder>player1</zorder>
+   <zorder>player2</zorder>
+   <zorder>startText</zorder>
+   <zorder>ball</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

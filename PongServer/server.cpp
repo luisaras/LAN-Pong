@@ -3,20 +3,20 @@
 #define portnum 12345
 using namespace std;
 
-void receiveActions(int playerID, int clientID, Game game) {
-    while (1) {
+void receiveActions(int playerID, int& clientID, Game* game) {
+    while (clientID > 0) {
         PlayerAction action;
         int msgID = recv(clientID, (char*)(&action), sizeof(action), 0);
-        if (msgID <= 0) {
+        if (msgID <= 0 || clientID <= 0) {
             clientID = -1;
             cout << "deu bosta" << endl;
             break;
         }
         cout << "recebeu mensagem" << endl;
         action.playerID = playerID;
-        cout << game.players[0].y << " " << game.players[1].y << endl;
-        game.onPlayerAction(action);
-        cout << game.players[0].y << " " << game.players[1].y << endl;
+        cout << game->players[0].y << " " << game->players[1].y << endl;
+        game->onPlayerAction(action);
+        cout << game->players[0].y << " " << game->players[1].y << endl;
     }
 }
 
@@ -46,9 +46,10 @@ Server::Server() {
 }
 
 void Server::run() {
-    int client1 = 0, client2 = 0;
+    int client1, client2;
 
     while(1) {
+        client1 = client2 = -1;
         cout << "Waiting for players" << endl;
         waitForPlayers(client1, client2);
         startGame(client1, client2);
@@ -56,33 +57,48 @@ void Server::run() {
 }
 
 void Server::startGame(int client1, int client2) {
-    Game game;
-    thread receiver1(&receiveActions, 1, client1, game);
-    thread receiver2(&receiveActions, 2, client2, game);
+    Game *game = new Game();
+    thread receiver1(receiveActions, 1, ref(client1), ref(game));
+    thread receiver2(receiveActions, 2, ref(client2), ref(game));
     cout << "Starting game..." << endl;
     while(1) {
-        game.update();
+        auto then = chrono::high_resolution_clock::now();
+
+        game->update();
         sendGameState(client1, client2, game);
-        if (client1 <= 0 || client2 <= 0) {
+
+        if (!checkConnections(client1, client2)) {
             break;
         }
-        this_thread::sleep_for(chrono::seconds(1 / framerate));
+
+        auto now = chrono::high_resolution_clock::now();
+        auto d = now - then;
+        auto time = chrono::milliseconds((long int)(1000 * 1.0 / framerate)) - d;
+        this_thread::sleep_for(time);
     }
     cout << "Game over." << endl;
+
+    receiver1.join();
+    receiver2.join();
 }
 
 int Server::sendWaitingMessage(int clientID) {
     ServerMessage msg;
     msg.serverState = 0; // esperando outro jogador
 
-    cout << "Mandando mensagem para o cliente..." << endl;
+    return send(clientID, (char*)(&msg), sizeof(msg), 0);
+}
+
+int Server::sendDisconnectMessage(int clientID) {
+    ServerMessage msg;
+    msg.serverState = 2; // jogador disconectado
 
     return send(clientID, (char*)(&msg), sizeof(msg), 0);
 }
 
-void Server::sendGameState(int &client1, int &client2, Game &game) {
+void Server::sendGameState(int &client1, int &client2, Game* game) {
     ServerMessage msg;
-    msg.gameState = game.getState();
+    msg.gameState = game->getState();
     msg.serverState = 1; // jogando
 
     if (send(client1, (char*)(&msg), sizeof(msg), 0) <= 0) {
@@ -131,7 +147,24 @@ void Server::waitForPlayers(int &client1, int &client2) {
             }
         }
     }
+}
 
+bool Server::checkConnections(int &client1, int &client2) {
+    if (client1 > 0) {
+        if (client2 > 0) {
+            return true;
+        } else {
+            sendDisconnectMessage(client1);
+            return false;
+        }
+    } else {
+        if (client2 > 0) {
+            sendDisconnectMessage(client2);
+            return false;
+        } else {
+            return false;
+        }
+    }
 }
 
 Server::~Server() { }

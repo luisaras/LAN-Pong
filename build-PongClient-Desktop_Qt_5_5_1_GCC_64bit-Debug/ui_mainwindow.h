@@ -34,6 +34,7 @@ public:
     QLabel *player2;
     QLabel *startText;
     QLabel *ball;
+    QLabel *background;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -42,9 +43,14 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(600, 400);
-        MainWindow->setMinimumSize(QSize(600, 400));
-        MainWindow->setMaximumSize(QSize(600, 400));
+        MainWindow->resize(600, 460);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(600, 460));
+        MainWindow->setMaximumSize(QSize(600, 460));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         connectButton = new QPushButton(centralWidget);
@@ -83,9 +89,21 @@ public:
         ball->setObjectName(QStringLiteral("ball"));
         ball->setGeometry(QRect(280, 220, 20, 20));
         ball->setStyleSheet(QLatin1String("border: 1px solid black;\n"
-"background-color: white"));
+"background-color: green"));
         ball->setFrameShape(QFrame::Box);
+        background = new QLabel(centralWidget);
+        background->setObjectName(QStringLiteral("background"));
+        background->setGeometry(QRect(0, 0, 600, 400));
+        background->setStyleSheet(QLatin1String("background-color: white;\n"
+"border:1px solid black"));
         MainWindow->setCentralWidget(centralWidget);
+        background->raise();
+        connectButton->raise();
+        warning->raise();
+        player1->raise();
+        player2->raise();
+        startText->raise();
+        ball->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 600, 25));
@@ -111,6 +129,7 @@ public:
         player2->setText(QString());
         startText->setText(QApplication::translate("MainWindow", "Starting in...", 0));
         ball->setText(QString());
+        background->setText(QString());
     } // retranslateUi
 
 };
