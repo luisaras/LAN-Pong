@@ -22,6 +22,10 @@ void receiveActions(int playerID, int& clientID, Game* game) {
 
 Server::Server() {
 
+    for(int i = 0; i < maxGames; i++) {
+        games[i] = NULL;
+    }
+
     socketID = socket(AF_INET, SOCK_STREAM, 0);
 
     if (socketID == -1) {
@@ -52,12 +56,17 @@ void Server::run() {
         client1 = client2 = -1;
         cout << "Waiting for players" << endl;
         waitForPlayers(client1, client2);
-
-        startGame(client1, client2);
+        int i = findEmptyGameSlot();
+        if (i >= 0) {
+            games[i] = new thread(&Server::startGame, this, i, client1, client2);
+        } else {
+            sendFullMessage(client1);
+            sendFullMessage(client2);
+        }
     }
 }
 
-void Server::startGame(int client1, int client2) {
+void Server::startGame(int i, int client1, int client2) {
     Game *game = new Game();
     thread receiver1(receiveActions, 1, ref(client1), ref(game));
     thread receiver2(receiveActions, 2, ref(client2), ref(game));
@@ -81,6 +90,8 @@ void Server::startGame(int client1, int client2) {
 
     receiver1.join();
     receiver2.join();
+
+    games[i] = NULL;
 }
 
 int Server::sendWaitingMessage(int clientID) {
@@ -93,6 +104,13 @@ int Server::sendWaitingMessage(int clientID) {
 int Server::sendDisconnectMessage(int clientID) {
     ServerMessage msg;
     msg.serverState = 2; // jogador disconectado
+
+    return send(clientID, (char*)(&msg), sizeof(msg), 0);
+}
+
+int Server::sendFullMessage(int clientID) {
+    ServerMessage msg;
+    msg.serverState = 3; // server cheio
 
     return send(clientID, (char*)(&msg), sizeof(msg), 0);
 }
@@ -166,6 +184,15 @@ bool Server::checkConnections(int &client1, int &client2) {
             return false;
         }
     }
+}
+
+int Server::findEmptyGameSlot() {
+    for(int i = 0; i < maxGames; i++) {
+        if (games[i] == NULL) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 Server::~Server() { }

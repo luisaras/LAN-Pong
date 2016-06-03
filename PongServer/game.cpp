@@ -4,16 +4,16 @@
 #define windowHeight 400
 #define barWidth 20
 #define barHeight 80
-#define barSpeed 4
+#define barSpeed 10
 #define ballSize 20
-#define ballSpeed 4
+#define ballSpeed 6
 
 using namespace std;
 
 Game::Game() {
     resetRound();
     players[0].points = players[1].points = 0;
-    startCount = 3;
+    startCount = 90;
 }
 
 Game::~Game() { }
@@ -30,12 +30,15 @@ void Game::moveBall() {
 
     ball.x += ball.dx;
     ball.y += ball.dy;
+
     if (ball.y >= players[0].y && ball.y < players[0].y + barHeight
         && ball.x <= players[0].x + barWidth) {
         ball.dx *= -1;
+        ball.x = players[0].x + barWidth;
     } else if (ball.y >= players[1].y && ball.y < players[1].y + barHeight
-        && ball.x <= players[1].x) {
+        && ball.x >= players[1].x - ballSize) {
         ball.dx *= -1;
+        ball.x = players[1].x - ballSize;
     }
 
     if (ball.x <= 0) {

@@ -33,8 +33,10 @@ public:
     QLabel *player1;
     QLabel *player2;
     QLabel *startText;
-    QLabel *ball;
     QLabel *background;
+    QLabel *points1;
+    QLabel *points2;
+    QLabel *ball;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -85,17 +87,30 @@ public:
         startText->setStyleSheet(QStringLiteral(""));
         startText->setLineWidth(2);
         startText->setAlignment(Qt::AlignCenter);
-        ball = new QLabel(centralWidget);
-        ball->setObjectName(QStringLiteral("ball"));
-        ball->setGeometry(QRect(280, 220, 20, 20));
-        ball->setStyleSheet(QLatin1String("border: 1px solid black;\n"
-"background-color: green"));
-        ball->setFrameShape(QFrame::Box);
         background = new QLabel(centralWidget);
         background->setObjectName(QStringLiteral("background"));
         background->setGeometry(QRect(0, 0, 600, 400));
         background->setStyleSheet(QLatin1String("background-color: white;\n"
 "border:1px solid black"));
+        points1 = new QLabel(centralWidget);
+        points1->setObjectName(QStringLiteral("points1"));
+        points1->setGeometry(QRect(40, 30, 51, 31));
+        points1->setFont(font);
+        points2 = new QLabel(centralWidget);
+        points2->setObjectName(QStringLiteral("points2"));
+        points2->setGeometry(QRect(510, 30, 51, 31));
+        points2->setFont(font);
+        points2->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        ball = new QLabel(centralWidget);
+        ball->setObjectName(QStringLiteral("ball"));
+        ball->setGeometry(QRect(280, 250, 20, 20));
+        QFont font3;
+        font3.setFamily(QStringLiteral("Microsoft JhengHei UI"));
+        font3.setPointSize(19);
+        font3.setBold(true);
+        font3.setWeight(75);
+        ball->setFont(font3);
+        ball->setAlignment(Qt::AlignCenter);
         MainWindow->setCentralWidget(centralWidget);
         background->raise();
         connectButton->raise();
@@ -103,6 +118,8 @@ public:
         player1->raise();
         player2->raise();
         startText->raise();
+        points1->raise();
+        points2->raise();
         ball->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -128,8 +145,10 @@ public:
         player1->setText(QString());
         player2->setText(QString());
         startText->setText(QApplication::translate("MainWindow", "Starting in...", 0));
-        ball->setText(QString());
         background->setText(QString());
+        points1->setText(QApplication::translate("MainWindow", "0", 0));
+        points2->setText(QApplication::translate("MainWindow", "0", 0));
+        ball->setText(QApplication::translate("MainWindow", "O", 0));
     } // retranslateUi
 
 };

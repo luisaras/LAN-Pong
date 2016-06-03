@@ -13,6 +13,8 @@
 #include <errno.h>
 #include <cstring>
 
+#define maxGames 3
+
 // 0 = esperando segundo cliente
 // 1 = jogando
 struct ServerMessage {
@@ -28,13 +30,16 @@ class Server {
         void run();
 
     private:
+        std::thread* games[maxGames];
         int socketID;
         void waitForPlayers(int&, int&);
-        void startGame(int, int);
+        void startGame(int, int, int);
         void sendGameState(int &, int &, Game*);
         int sendWaitingMessage(int);
+        int sendFullMessage(int);
         int sendDisconnectMessage(int);
         bool checkConnections(int&, int&);
+        int findEmptyGameSlot();
 };
 
 #endif

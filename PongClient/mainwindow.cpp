@@ -58,8 +58,6 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
 void MainWindow::sendMessage(int input) {
     PlayerAction action;
     action.input = input;
-    ui->warning->show();
-    ui->warning->setText("Mensagem para server.");
     server->write((char*)(&action), (qint64) sizeof(action));
 }
 
@@ -76,6 +74,8 @@ void MainWindow::receiveMessage() {
     } else if (msg.serverState == 2) { // player desconectou
         server->close();
         showDisconnectScreen();
+    } else if (msg.serverState == 3) {
+        showFullScreen();
     } else {
         // Qualquer outra coisa
     }
@@ -106,6 +106,13 @@ void MainWindow::showConnectScreen() {
     ui->connectButton->show();
 }
 
+void MainWindow::showFullScreen() {
+    showConnectScreen();
+
+    ui->warning->show();
+    ui->warning->setText("Full server.");
+}
+
 void MainWindow::showDisconnectScreen() {
     showConnectScreen();
 
@@ -130,7 +137,8 @@ void MainWindow::updateGameScreen(GameState state) {
     ui->ball->setGeometry(state.ballX, state.ballY, ballSize, ballSize);
 
     if (state.startCount > 0) {
-        QString n = QString::number(std::ceil(state.startCount / framerate));
+        QString n = QString::number(std::ceil(state.startCount / framerate) + 1);
+        ui->startText->show();
         ui->startText->setText("Starting in... " + n);
     } else {
         ui->startText->hide();

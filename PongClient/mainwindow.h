@@ -59,6 +59,7 @@ private:
     void showConnectScreen();
     void showDisconnectScreen();
     void showWaitingScreen();
+    void showFullScreen();
     void updateGameScreen(GameState);
     void tryConnection();
     Ui::MainWindow *ui;
