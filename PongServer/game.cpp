@@ -10,49 +10,6 @@
 
 using namespace std;
 
-/*char pixels[windowWidth / 20][windowHeight / 20];
-
-void print() {
-    system("cls");
-    for(int j = 0; j < windowHeight / 20; j++) {
-        for(int i = 0; i < windowWidth / 20; i++) {
-            cout << pixels[i][j];
-        }
-        cout << endl;
-    }
-}
-
-void storePixels(GameState game) {
-    for(int i = 0; i < windowWidth / 20; i++) {
-        for(int j = 0; j < windowHeight / 20; j++) {
-            //cout << i << " " << j << endl;
-            pixels[i][j] = '-';
-        }
-    }
-    for(int i = 0; i < barWidth / 20; i++) {
-        for(int j = 0; j < barHeight / 20; j++) {
-            pixels[game.p1.x / 20 + i][game.p1.y / 20 + j] = 'x';
-            pixels[game.p2.x / 20 + i][game.p2.y / 20 + j] = 'x';
-        }
-    }
-    for(int i = 0; i < ballSize / 20; i++) {
-        for(int j = 0; j < ballSize / 20; j++) {
-            pixels[(int)round(game.ballX / 20) + i][(int)round(game.ballY / 20) + j] = 'o';
-        }
-    }
-}
-
-int main() {
-    Game game;
-    while(1) {
-        //cout << "frame" << endl;
-        game.update();
-        storePixels(game.getState());
-        print();
-        Sleep(1000);
-    }
-}*/
-
 Game::Game() {
     resetRound();
     players[0].points = players[1].points = 0;
