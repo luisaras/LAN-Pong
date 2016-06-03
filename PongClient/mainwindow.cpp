@@ -48,9 +48,9 @@ void MainWindow::tryConnection() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* e) {
-    if (e->text() == "s") { // baixo
+    if (e->text() == "s" || e->key() == Qt::Key_Down) { // baixo
         sendMessage(1);
-    } else if (e->text() == "w") { // cima
+    } else if (e->text() == "w" || Qt::Key_Up) { // cima
         sendMessage(-1);
     }
 }
@@ -68,7 +68,6 @@ void MainWindow::receiveMessage() {
     server->read((char *) &msg, (qint64) sizeof(msg));
 
     ui->warning->show();
-    ui->warning->setText("Mensagem do server.");
 
     if (msg.serverState == 0) { // se tá esperando outro cliente
         showWaitingScreen();
@@ -77,10 +76,8 @@ void MainWindow::receiveMessage() {
     } else if (msg.serverState == 2) { // player desconectou
         server->close();
         showDisconnectScreen();
-    } else { // tá cheio
-        showConnectScreen();
-        ui->warning->show();
-        ui->warning->setText("There're already two players.");
+    } else {
+        // Qualquer outra coisa
     }
 }
 
@@ -89,6 +86,8 @@ void MainWindow::showWaitingScreen() {
     ui->warning->hide();
     ui->player1->hide();
     ui->player2->hide();
+    ui->points1->hide();
+    ui->points2->hide();
     ui->ball->hide();
 
     ui->startText->show();
@@ -98,6 +97,8 @@ void MainWindow::showWaitingScreen() {
 void MainWindow::showConnectScreen() {
     ui->player1->hide();
     ui->player2->hide();
+    ui->points1->hide();
+    ui->points2->hide();
     ui->ball->hide();
     ui->warning->hide();
     ui->startText->hide();
@@ -106,10 +107,6 @@ void MainWindow::showConnectScreen() {
 }
 
 void MainWindow::showDisconnectScreen() {
-    ui->player1->hide();
-    ui->player2->hide();
-    ui->ball->hide();
-
     showConnectScreen();
 
     ui->warning->show();
@@ -122,10 +119,14 @@ void MainWindow::updateGameScreen(GameState state) {
 
     ui->player1->show();
     ui->player2->show();
+    ui->points1->show();
+    ui->points2->show();
     ui->ball->show();
 
     ui->player1->setGeometry(state.p1.x, state.p1.y, barWidth, barHeight);
     ui->player2->setGeometry(state.p2.x, state.p2.y, barWidth, barHeight);
+    ui->points1->setText(QString::number(state.p1.points));
+    ui->points2->setText(QString::number(state.p2.points));
     ui->ball->setGeometry(state.ballX, state.ballY, ballSize, ballSize);
 
     if (state.startCount > 0) {

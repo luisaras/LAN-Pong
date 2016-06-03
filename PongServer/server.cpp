@@ -34,7 +34,7 @@ Server::Server() {
     addr.sin_port = htons(portnum);
     addr.sin_addr.s_addr = inet_addr("192.168.7.2");
 
-    int bindID = bind(socketID, (sockaddr*)&addr, sizeof(addr));
+    int bindID = bind(socketID, (sockaddr*) &addr, sizeof(addr));
     if (bindID == -1) {
         cout << "Bind error " << strerror(errno) << endl;
     }
@@ -52,6 +52,7 @@ void Server::run() {
         client1 = client2 = -1;
         cout << "Waiting for players" << endl;
         waitForPlayers(client1, client2);
+
         startGame(client1, client2);
     }
 }
