@@ -36,7 +36,7 @@ Server::Server() {
     bzero((char *) &addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(portnum);
-    addr.sin_addr.s_addr = inet_addr("192.168.7.2");
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     int bindID = bind(socketID, (sockaddr*) &addr, sizeof(addr));
     if (bindID == -1) {

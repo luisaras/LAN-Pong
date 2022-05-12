@@ -2,7 +2,7 @@
 
 int main(int, char**) {
     srand((int) time(NULL));
-
+    
     Server server;
     server.run();
 

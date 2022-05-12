@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 void MainWindow::connectToServer() {
-    QHostAddress host("192.168.7.2");
+    QHostAddress host("127.0.0.1");
     server->abort();
     server->connectToHost(host, portnum);
     ui->warning->show();
